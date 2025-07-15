@@ -1,0 +1,245 @@
+body {
+  background: linear-gradient(150deg, red, blue);
+  background-repeat: no-repeat;
+  height: 100vh;
+}
+
+.register {
+  position: absolute;
+  top: -132px;
+  left: 50%;
+  transform: translate(-50%, 50%);
+}
+.login {
+  position: absolute;
+  top: -132px;
+  left: 50%;
+  transform: translate(-50%, 50%);
+}
+.form-main-register {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-gap: 0px;
+  height: 518px;
+  clip-path: polygon(10% 0%, 100% 0%, 100% 100%, 100% 100%, 0% 100%, 0% 17%);
+}
+.form-main-login {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  clip-path: polygon(10% 0%, 100% 0%, 100% 100%, 100% 100%, 0% 100%, 0% 17%);
+  height: 518px;
+}
+.form-register,
+.form-login {
+  background-color: rgb(255, 255, 255);
+  padding: 30px;
+}
+[class^="text-neo"] {
+  border-right: 1px solid rgba(0, 0, 0, 0.351);
+  padding: 30px;
+  background-color: #ffffff;
+}
+[class^="text-neo"] img {
+  height: 260px;
+  padding: 0px 40px;
+}
+[class^="text-neo-"] .title {
+  font-weight: 500;
+  font-size: 35px;
+}
+[class^="text-neo-"] p {
+  font-size: 18px;
+  margin: 10px 40px 0px 0px;
+}
+
+.box {
+  position: relative;
+  display: grid;
+  grid-template-rows: 40px 15px;
+  grid-gap: 3px;
+}
+.box input {
+  border: none;
+  padding: 10px 0px;
+  width: 165px;
+  border-bottom: 1px solid black;
+  outline: none;
+  font-size: 20px;
+  width: 100%;
+  max-width: none;
+  overflow-x: auto;
+}
+.box span {
+  border-bottom: 2px solid;
+  border-image: linear-gradient(45deg, red, blue) 1;
+  width: 0%;
+  position: absolute;
+  left: 0;
+  top: 39px;
+}
+.box input:focus ~ span {
+  width: 100%;
+}
+
+.box-btn {
+  margin-top: 15px;
+}
+.btnregister,
+.btnlogin {
+  border: none;
+  width: 100%;
+  padding: 10px;
+  background-color: red;
+  color: white;
+  clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 10% 100%, 0% 50%);
+}
+.box-btn button {
+  padding: 11px 20px 11px 20px;
+  font-size: 20px;
+  border: none;
+  background: #ff0000;
+  color: white;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  font-weight: 500;
+  margin-left: 3px;
+  outline: none;
+}
+.box-btn button::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 100%;
+  background: #dd0000;
+  transition: width 0.3s ease;
+}
+.box-btn button:hover::before {
+  width: 100%;
+}
+.box-btn button span {
+  position: relative;
+  z-index: 10;
+}
+.remember {
+  display: grid;
+  align-items: center;
+  grid-template-columns: repeat(2, 1fr);
+}
+.remember .tick-remember {
+  display: grid;
+  align-items: center;
+  grid-template-columns: 20% 80%;
+}
+.remember .tick-remember input {
+  accent-color: red;
+  margin-top: 2px;
+  cursor: pointer;
+}
+.remember .tick-remember .legal {
+  background-color: white;
+  border: none;
+  outline: none;
+  font-size: 16px;
+  color: #004fb0;
+}
+.remember .tick-remember .legal:hover {
+  background: linear-gradient(to right, red, blue);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.forgot-password {
+  display: flex;
+  justify-content: end;
+}
+.forgot-password .reset-password {
+  border: none;
+  outline: none;
+  color: #004fb0;
+  background-color: white;
+  font-size: 16px;
+}
+.forgot-password .reset-password:hover {
+  background: linear-gradient(to right, red, blue);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.error {
+  color: red;
+}
+.box-tran {
+  margin-top: 15px;
+}
+.box-tran [class^="tran-"] {
+  outline: none;
+  border: none;
+  color: #004fb0;
+  padding: 5px;
+  background-color: white;
+  font-size: 18px;
+}
+.box-tran span {
+  font-size: 18px;
+}
+.divider {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  margin: 20px 0;
+}
+.line {
+  flex: 1;
+  border-bottom: 1px solid #a3a3a3;
+}
+.text {
+  padding: 0 10px;
+}
+.divider-icon {
+  display: grid;
+  justify-content: center;
+  grid-template-columns: 30px 30px;
+  grid-gap: 10px;
+}
+[class^="logo-icon-"] {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: white;
+  border: none;
+}
+[class^="logo-icon-"] img {
+  height: 25px;
+}
+[class^="logo-icon-"]:hover img {
+  box-shadow: 0px 0px 10px;
+}
+.logo-icon-gg,
+.logo-icon-gg img {
+  border-radius: 100%;
+}
+
+/*  */
+.form-login {
+  display: block;
+  z-index: 10;
+}
+.form-register {
+  display: none;
+}
+.login-active {
+  display: none;
+  z-index: -1;
+}
+.register-active {
+  display: block;
+}
+.text-neo-rgt {
+  display: none;
+}
+.text-neo-rgt-active {
+  display: block;
+}
