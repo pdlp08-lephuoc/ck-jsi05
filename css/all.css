@@ -100,12 +100,15 @@ button {
   height: 90%;
   position: relative;
 }
-
+.box-list1 {
+  display: grid;
+  grid-template-rows: repeat(5, 1fr);
+}
 .box-menu-list li {
-  display: flex;
+  display: grid;
   align-items: center;
   left: 25px;
-  gap: 15px;
+  grid-gap: 10px;
   font-size: 18px;
   padding: 12px 0px;
   width: 260px;

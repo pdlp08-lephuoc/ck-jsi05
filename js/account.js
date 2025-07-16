@@ -137,6 +137,11 @@ form_register.addEventListener("submit", function (event) {
     emailsimilar &&
     legalacccept
   ) {
+    const userdata = {
+      username: userCredential.user.displayName || userCredential.user.email,
+    };
+    localStorage.setItem("user", JSON.stringify(userdata));
+
     btnRegister.disabled = true;
     spanRegister.innerHTML = `<span class="btn-spinner"></span>`;
     createUserWithEmailAndPassword(
@@ -164,7 +169,7 @@ form_register.addEventListener("submit", function (event) {
         spanRegister.innerText = "Đăng ký";
 
         console.log("User đăng ký:", user);
-        // window.location.href = "/html/index.html";
+        window.location.href = "/html/index.html";
       })
       .catch((error) => {
         btnRegister.disabled = false;
@@ -183,6 +188,8 @@ form_login.addEventListener("submit", function (e) {
   const password = password_login.value.trim();
   const btnlogin = document.getElementById("btn-login");
   const spanlogin = btnlogin.querySelector("span");
+  const remember = document.querySelector("#remember_me");
+  const checkbox = remember.checked;
 
   if (email === "" || password === "") {
     alert("Vui lòng nhập đầy đủ thông tin");
@@ -195,10 +202,21 @@ form_login.addEventListener("submit", function (e) {
       alert("Đăng nhập thành công!");
       console.log("User đăng nhập:", userCredential.user);
       window.location.href = "/html/index.html";
+      const userdata = {
+        username: userCredential.user.displayName || userCredential.user.email,
+      };
+      localStorage.setItem("user", JSON.stringify(userdata));
+      if (checkbox) {
+        const userdata = {
+          username:
+            userCredential.user.displayName || userCredential.user.email,
+        };
+        localStorage.setItem("remember", JSON.stringify(userdata));
+      }
     })
     .catch((error) => {
       btnlogin.disabled = false;
-      spanlogin.innerText = "Đăng ký";
+      spanlogin.innerText = "Đăng nhập";
 
       alert("Lỗi đăng nhập: " + error.message);
     });
