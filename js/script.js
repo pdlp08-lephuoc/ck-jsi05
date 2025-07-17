@@ -35,5 +35,4 @@ endown.addEventListener("click", function (event) {
   alert("Từ giờ các ưu đãi sẽ được gửi qua email của bạn!");
   recapcha_container.classList.remove("recapcha-container-active");
   free.value = "";
-  grecaptcha.reset();
 });
