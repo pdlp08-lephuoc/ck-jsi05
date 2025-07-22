@@ -1,3 +1,10 @@
+import {
+  getAuth,
+  fetchSignInMethodsForEmail,
+} from "https://www.gstatic.com/firebasejs/11.9.1/firebase-auth.js";
+import { db } from "./firebaseconfig.js";
+import { auth } from "./firebaseconfig.js";
+
 const circle_1 = document.querySelector(".circle-1");
 const circle_2 = document.querySelector(".circle-2");
 const circle_3 = document.querySelector(".circle-3");
@@ -30,12 +37,8 @@ circle_1.addEventListener("click", function (event) {
   line_link_2.classList.remove("line-link-2-active");
 
   verify_email_section.classList.remove("verify-email-active");
-  accept_recapcha.classList.remove("accept-recapcha-active");
-
   masage_otp.classList.remove("masage-otp-active");
-  if (newPasswordForm) {
-    newPasswordForm.style.display = "none";
-  }
+  accept_password_reset.classList.remove("accept-password-reset-active");
 });
 
 circle_2.addEventListener("click", function (event) {
@@ -51,17 +54,12 @@ circle_2.addEventListener("click", function (event) {
   line_link_2.classList.remove("line-link-2-active");
 
   verify_email_section.classList.add("verify-email-active");
-  accept_recapcha.classList.add("accept-recapcha-active");
   masage_otp.classList.add("masage-otp-active");
-
-  if (newPasswordForm) {
-    newPasswordForm.style.display = "none";
-  }
+  accept_password_reset.classList.remove("accept-password-reset-active");
 });
 
 circle_3.addEventListener("click", function (event) {
   event.preventDefault();
-  console.log("Clicked circle 3 - Điều hướng UI đến bước cập nhật mật khẩu.");
 
   if (!isOtpVerifiedSuccessfully) {
     alert("Vui lòng xác minh mã OTP trước khi cập nhật mật khẩu!");
@@ -72,12 +70,8 @@ circle_3.addEventListener("click", function (event) {
   line_link_2.classList.add("line-link-2-active");
 
   verify_email_section.classList.add("verify-email-active");
-  accept_recapcha.classList.add("accept-recapcha-active");
   masage_otp.classList.remove("masage-otp-active");
-
-  if (newPasswordForm) {
-    newPasswordForm.style.display = "block";
-  }
+  accept_password_reset.classList.add("accept-password-reset-active");
 });
 
 btn_verify_email.addEventListener("click", async function (event) {
@@ -118,21 +112,19 @@ btn_verify_email.addEventListener("click", async function (event) {
       line_link_1.classList.add("line-link-1-active");
       line_link_2.classList.remove("line-link-2-active");
       verify_email_section.classList.add("verify-email-active");
-      accept_recapcha.classList.add("accept-recapcha-active");
       masage_otp.classList.add("masage-otp-active");
+      accept_password_reset.classList.remove("accept-password-reset-active");
+
       if (newPasswordForm) {
         newPasswordForm.style.display = "none";
       }
-      grecaptcha.reset();
       otp_input.value = "";
     } else {
       alert(data.message);
-      grecaptcha.reset();
     }
   } catch (error) {
     console.error("Lỗi khi gửi OTP đến backend:", error);
     alert("Đã xảy ra lỗi khi gửi mã OTP. Vui lòng thử lại sau.");
-    grecaptcha.reset();
   }
 });
 
@@ -172,6 +164,7 @@ btn_verify_otp.addEventListener("click", async function (event) {
       verify_email_section.classList.add("verify-email-active");
       accept_recapcha.classList.add("accept-recapcha-active");
       masage_otp.classList.remove("masage-otp-active");
+      accept_password_reset.classList.add("accept-password-reset-active");
 
       if (newPasswordForm) {
         newPasswordForm.style.display = "block";
@@ -183,4 +176,15 @@ btn_verify_otp.addEventListener("click", async function (event) {
     console.error("Lỗi khi xác minh OTP với backend:", error);
     alert("Đã xảy ra lỗi khi xác minh mã OTP. Vui lòng thử lại.");
   }
+});
+
+const accept_password_reset = document.querySelector(".accept-password-reset");
+const new_password = document.querySelector("#new-password");
+const confirm_new_password = document.querySelector("#confirm-new-password");
+const btn_accept_new_password = document.querySelector(
+  ".btn-accept-new-password"
+);
+
+btn_accept_new_password.addEventListener("click", function (event) {
+  event.preventDefault();
 });

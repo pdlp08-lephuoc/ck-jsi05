@@ -93,6 +93,7 @@ if (logout) {
     event.preventDefault();
     if (confirm_logout) {
       localStorage.removeItem("user");
+      localStorage.removeItem("remember");
       updateAuthUI();
       window.location.href = "/html/account.html";
     } else {

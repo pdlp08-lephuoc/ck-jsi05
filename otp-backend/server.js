@@ -23,7 +23,17 @@ let transporter = nodemailer.createTransport({
   },
 });
 
-// Endpoint để gửi OTP
+// Import Firebase Admin SDK bên ngoài luôn
+const admin = require("firebase-admin");
+const serviceAccount = require("./ck-project-d8f52-firebase-adminsdk-fbsvc-96e6a40fc3.json");
+
+// Khởi tạo Firebase Admin SDK
+if (!admin.apps.length) {
+  admin.initializeApp({
+    credential: admin.credential.cert(serviceAccount),
+  });
+}
+
 app.post("/send-otp", async (req, res) => {
   const { email } = req.body;
 
@@ -33,12 +43,28 @@ app.post("/send-otp", async (req, res) => {
       .json({ success: false, message: "Email là bắt buộc." });
   }
 
-  // Tạo OTP 6 chữ số
-  const otp = Math.floor(100000 + Math.random() * 900000).toString();
-  const expires = Date.now() + 5 * 60 * 1000; // OTP hết hạn sau 5 phút
+  // ✅ Kiểm tra xem email có tồn tại trên Firebase Authentication
+  try {
+    console.log("Email kiểm tra:", email);
 
+    await admin.auth().getUserByEmail(email);
+  } catch (error) {
+    if (error.code === "auth/user-not-found") {
+      return res
+        .status(404)
+        .json({ success: false, message: "Email chưa được đăng ký." });
+    } else {
+      return res.status(500).json({
+        success: false,
+        message: "Lỗi khi kiểm tra tài khoản Firebase.",
+      });
+    }
+  }
+
+  // ✅ Gửi OTP như cũ
+  const otp = Math.floor(100000 + Math.random() * 900000).toString();
+  const expires = Date.now() + 5 * 60 * 1000;
   otpStorage[email] = { otp, expires };
-  console.log(`OTP cho ${email}: ${otp}`); // Để debug trên console server
 
   const mailOptions = {
     from: process.env.EMAIL_USER,

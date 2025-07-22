@@ -616,7 +616,7 @@
               Điện thoại : 0399562763 <br />
               Email : Pdlp0811@gmail.com <br />
               Giấy phép kinh doanh hoạt động mua bán hàng hóa và các hoạt động
-              liên quan trực tiếp đến mua bán hàng hóa, số 0304965680/KD-0321,
+              liên quan trực tiếp đến mua bán hàng hóa, số 0399562763/KD-0321,
               do Sở Công thương TP. Hồ Chí Minh cấp lần đầu ngày 24/01/2019.
             </p>
             <img
@@ -679,6 +679,14 @@
         recapcha_container.classList.remove("recapcha-container-active");
         free.value = "";
         grecaptcha.reset();
+      });
+
+      const law1_2 = document.querySelector(".law1-2");
+
+      law1_2.addEventListener("click", function (event) {
+        event.preventDefault();
+        window.location.href = "/html/law1.html";
+        console.log("click");
       });
     </script>
     <script src="/js/all.js"></script>

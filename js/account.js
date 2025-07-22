@@ -134,16 +134,12 @@ form_register.addEventListener("submit", function (event) {
     checklengthpassword &&
     checkmatch &&
     phonevalid &&
-    emailsimilar &&
+    emailsimilar && // Lưu ý: Hàm này hiện đang kiểm tra localStorage, không phải Firebase Auth.
     legalacccept
   ) {
-    const userdata = {
-      username: userCredential.user.displayName || userCredential.user.email,
-    };
-    localStorage.setItem("user", JSON.stringify(userdata));
-
     btnRegister.disabled = true;
     spanRegister.innerHTML = `<span class="btn-spinner"></span>`;
+
     createUserWithEmailAndPassword(
       auth,
       email_register.value.trim(),
@@ -152,13 +148,19 @@ form_register.addEventListener("submit", function (event) {
       .then(async (userCredential) => {
         const user = userCredential.user;
 
+        const userdata = {
+          username: user.displayName || user.email, // Vẫn dùng user.displayName ban đầu nếu chưa có
+        };
+        localStorage.setItem("user", JSON.stringify(userdata));
+
         await updateProfile(user, {
           displayName: user_register.value.trim(),
         });
 
+        // Sau khi updateProfile hoàn tất, user.displayName đã được cập nhật
         await setDoc(doc(db, "users", user.uid), {
           uid: user.uid,
-          username: user_register.value.trim(),
+          username: user.displayName, // Sử dụng user.displayName đã được cập nhật
           email: email_register.value.trim(),
           phone: phone_register.value.trim(),
           createdAt: new Date().toISOString(),
@@ -181,7 +183,6 @@ form_register.addEventListener("submit", function (event) {
     alert("Vui lòng đồng ý với điều khoản");
   }
 });
-
 form_login.addEventListener("submit", function (e) {
   e.preventDefault();
   const email = email_login.value.trim();
