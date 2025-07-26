@@ -128,6 +128,38 @@ app.post("/verify-otp", (req, res) => {
   }
 });
 
+// ✅ Đặt lại mật khẩu bằng Firebase Admin SDK
+app.post("/reset-password", async (req, res) => {
+  console.log("🔥 ĐÃ NHẬN YÊU CẦU reset-password");
+
+  const { email, newPassword } = req.body;
+
+  if (!email || !newPassword) {
+    return res
+      .status(400)
+      .json({ success: false, message: "Thiếu email hoặc mật khẩu mới." });
+  }
+
+  try {
+    const userRecord = await admin.auth().getUserByEmail(email);
+
+    await admin.auth().updateUser(userRecord.uid, {
+      password: newPassword,
+    });
+
+    res.json({
+      success: true,
+      message: "Mật khẩu đã được cập nhật thành công.",
+    });
+  } catch (error) {
+    console.error("Lỗi cập nhật mật khẩu:", error);
+    res.status(500).json({
+      success: false,
+      message: "Không thể cập nhật mật khẩu. Vui lòng thử lại.",
+    });
+  }
+});
+
 app.listen(port, () => {
   console.log(`Backend server đang chạy tại http://localhost:${port}`);
 });

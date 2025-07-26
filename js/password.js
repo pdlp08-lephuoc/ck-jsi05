@@ -21,6 +21,9 @@ const masage_otp = document.querySelector(".masage-otp");
 const btn_verify_otp = document.querySelector(".btn-verify-otp");
 const newPasswordForm = document.querySelector(".new-password-form");
 
+const btnSpan = btn_verify_email.querySelector("span");
+const spinner = btn_verify_email.querySelector(".spinner-container");
+
 const BACKEND_URL = "http://localhost:3000";
 
 let isEmailSentSuccessfully = false;
@@ -93,6 +96,9 @@ btn_verify_email.addEventListener("click", async function (event) {
     return;
   }
 
+  btnSpan.style.display = "none";
+  spinner.style.display = "flex";
+
   try {
     const backendResponse = await fetch(`${BACKEND_URL}/send-otp`, {
       method: "POST",
@@ -104,6 +110,8 @@ btn_verify_email.addEventListener("click", async function (event) {
 
     const data = await backendResponse.json();
 
+    btnSpan.style.display = "inline";
+    spinner.style.display = "none";
     if (data.success) {
       alert(data.message);
       isEmailSentSuccessfully = true;
@@ -125,6 +133,9 @@ btn_verify_email.addEventListener("click", async function (event) {
   } catch (error) {
     console.error("Lỗi khi gửi OTP đến backend:", error);
     alert("Đã xảy ra lỗi khi gửi mã OTP. Vui lòng thử lại sau.");
+  } finally {
+    btnSpan.style.display = "inline";
+    spinner.style.display = "none";
   }
 });
 
@@ -185,6 +196,45 @@ const btn_accept_new_password = document.querySelector(
   ".btn-accept-new-password"
 );
 
-btn_accept_new_password.addEventListener("click", function (event) {
+btn_accept_new_password.addEventListener("click", async function (event) {
   event.preventDefault();
+
+  const newPasswordValue = new_password.value.trim();
+  const confirmNewPasswordValue = confirm_new_password.value.trim();
+  const emailValue = verify_confirm_email.value.trim();
+
+  if (!newPasswordValue || !confirmNewPasswordValue) {
+    alert("Vui lòng nhập mật khẩu mới và xác nhận mật khẩu.");
+    return;
+  }
+  if (newPasswordValue !== confirmNewPasswordValue) {
+    alert("Mật khẩu mới và xác nhận không khớp.");
+    return;
+  }
+
+  try {
+    const response = await fetch("http://localhost:3000/reset-password", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        email: emailValue,
+        newPassword: newPasswordValue,
+      }),
+    });
+
+    const data = await response.json();
+    if (data.success) {
+      alert(data.message);
+      new_password.value = "";
+      confirm_new_password.value = "";
+      window.location.href = "/html/account.html";
+    } else {
+      alert("Lỗi: " + data.message);
+    }
+  } catch (error) {
+    console.error("Lỗi gửi yêu cầu reset:", error);
+    alert("Không thể cập nhật mật khẩu. Vui lòng thử lại sau.");
+  }
 });
