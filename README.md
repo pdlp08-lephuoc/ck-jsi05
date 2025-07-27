@@ -1,55 +1,79 @@
 # ck-jsi05
 
-This project contains a web application with frontend and backend components for account management and OTP verification.
+Dự án này là một ứng dụng web gồm frontend và backend cho quản lý tài khoản và xác thực OTP.
 
-## Project Structure
+## Cấu trúc dự án
 
-- `css/` - Stylesheets for the frontend UI
-- `html/` - HTML files for various pages (account, index, law, password, etc.)
-- `img/` - Image assets used in the frontend
-- `js/` - JavaScript files for frontend logic and Firebase configuration
-- `otp-backend/` - Backend code for OTP handling, including a Node.js server and Firebase admin configuration
+- `css/` – Các file CSS cho giao diện frontend
+- `html/` – Các file HTML cho các trang (account, index, law, password, ...)
+- `img/` – Hình ảnh sử dụng cho frontend
+- `js/` – JavaScript cho logic frontend và cấu hình Firebase
+- `otp-backend/` – Backend xử lý OTP, gồm server Node.js và cấu hình Firebase admin
 
-## Getting Started
+## Bắt đầu
 
-### Prerequisites
+### Yêu cầu
 
-- Node.js (for backend)
+- Node.js (cho backend)
 - npm (Node package manager)
 
-### Backend Setup
+### Cài đặt backend
 
-1. Navigate to the `otp-backend` directory:
+1. Di chuyển vào thư mục `otp-backend`:
    ```sh
    cd otp-backend
    ```
-2. Install dependencies:
+2. Cài đặt các package cần thiết:
+
    ```sh
    npm install
    ```
-3. Start the backend server:
-   ```sh
-   node server.js
-   ```
 
-### Frontend Usage
+3. Khởi động server backend:
+   - **Cách 1 (Khuyên dùng):**
+     - Mở dự án bằng Visual Studio Code.
+     - Khi được hỏi, nhấn nút **"Y"** để tự động khởi động server backend qua task (không cần mở terminal thủ công).
+     - Hoặc vào menu **Terminal > Run Task...** và chọn **Start OTP Server**.
+   - **Cách 2 (Thủ công):**
+     - Mở terminal, chạy lệnh:
+       ```sh
+       node server.js
+       ```
 
-Open the HTML files in the `html/` directory in your browser. Make sure the backend server is running for OTP-related features.
+### Dừng server backend
 
-## Configuration
+- Nếu chạy bằng VS Code Task:
+  - Nhấn `Ctrl+C` trong terminal task hoặc dừng task trong menu **Terminal > Run Task...**
+  - Hoặc dùng lệnh dừng task trong Command Palette:
+    ```sh
+    Tasks: Terminate Task
+    ```
+    Sau đó chọn **Start OTP Server** để dừng server.
+- Nếu chạy bằng node:
+  - Nhấn `Ctrl+C` trong terminal đang chạy lệnh `node server.js`.
+  - Hoặc dùng lệnh sau trong Command Prompt hoặc PowerShell để dừng toàn bộ tiến trình node:
+    ```sh
+    taskkill /F /IM node.exe
+    ```
 
-- Update Firebase configuration in `js/firebaseconfig.js` for frontend Firebase usage.
-- Backend Firebase admin credentials are stored in `otp-backend/ck-project-d8f52-firebase-adminsdk-fbsvc-96e6a40fc3.json` (do not share this file publicly).
+### Sử dụng frontend
+
+Mở các file HTML trong thư mục `html/` bằng trình duyệt. Đảm bảo backend đã chạy để sử dụng các tính năng OTP.
+
+## Cấu hình
+
+- Cập nhật cấu hình Firebase ở `js/firebaseconfig.js` cho frontend.
+- Thông tin xác thực Firebase admin cho backend nằm ở `otp-backend/ck-project-d8f52-firebase-adminsdk-fbsvc-96e6a40fc3.json` (không chia sẻ file này công khai).
 
 ## Scripts
 
-- Backend server: `otp-backend/server.js`
-- Frontend logic: `js/all.js`, `js/account.js`, `js/password.js`, `js/script.js`
+- Backend: `otp-backend/server.js`
+- Frontend: `js/all.js`, `js/account.js`, `js/password.js`, `js/script.js`
 
 ## License
 
-Specify your license here.
+Vui lòng bổ sung thông tin giấy phép tại đây.
 
 ---
 
-Feel free to update this README with more details as your project evolves.
+Bạn có thể cập nhật README này khi dự án phát triển thêm.
