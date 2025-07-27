@@ -134,7 +134,7 @@ form_register.addEventListener("submit", function (event) {
     checklengthpassword &&
     checkmatch &&
     phonevalid &&
-    emailsimilar && // Lưu ý: Hàm này hiện đang kiểm tra localStorage, không phải Firebase Auth.
+    emailsimilar &&
     legalacccept
   ) {
     btnRegister.disabled = true;
@@ -149,7 +149,7 @@ form_register.addEventListener("submit", function (event) {
         const user = userCredential.user;
 
         const userdata = {
-          username: user.displayName || user.email, // Vẫn dùng user.displayName ban đầu nếu chưa có
+          username: user.displayName || user.email,
         };
         localStorage.setItem("user", JSON.stringify(userdata));
 
@@ -157,10 +157,9 @@ form_register.addEventListener("submit", function (event) {
           displayName: user_register.value.trim(),
         });
 
-        // Sau khi updateProfile hoàn tất, user.displayName đã được cập nhật
         await setDoc(doc(db, "users", user.uid), {
           uid: user.uid,
-          username: user.displayName, // Sử dụng user.displayName đã được cập nhật
+          username: user.displayName,
           email: email_register.value.trim(),
           phone: phone_register.value.trim(),
           createdAt: new Date().toISOString(),
@@ -227,4 +226,79 @@ const reset_password = document.querySelector(".reset-password");
 reset_password.addEventListener("click", function (event) {
   event.preventDefault();
   window.location.href = "/html/password.html";
+});
+
+const login_with_google = document.querySelector(".logo-icon-gg");
+const login_with_microsoft = document.querySelector(".logo-icon-mrs");
+
+login_with_google.addEventListener("click", function (event) {
+  event.preventDefault();
+  const provider = new GoogleAuthProvider();
+  signInWithPopup(auth, provider)
+    .then((result) => {
+      const user = result.user;
+      console.log("User đăng nhập bằng Google:", user);
+      window.location.href = "/html/index.html";
+      const userdata = {
+        username: user.displayName || user.email,
+      };
+      localStorage.setItem("user", JSON.stringify(userdata));
+    })
+    .catch((error) => {
+      if (error.code === "auth/popup-closed-by-user") {
+        console.warn("Người dùng đã đóng popup Google mà chưa đăng nhập.");
+        return;
+      }
+
+      console.error("Lỗi đăng nhập bằng Google:", error);
+      alert("Lỗi đăng nhập bằng Google: " + error.message);
+    });
+});
+import {
+  fetchSignInMethodsForEmail,
+  linkWithCredential,
+} from "https://www.gstatic.com/firebasejs/11.9.1/firebase-auth.js";
+
+login_with_microsoft.addEventListener("click", async function (event) {
+  event.preventDefault();
+  const provider = new OAuthProvider("microsoft.com");
+  provider.setCustomParameters({
+    prompt: "select_account",
+  });
+
+  try {
+    const result = await signInWithPopup(auth, provider);
+    const user = result.user;
+
+    console.log("User đăng nhập bằng Microsoft:", user);
+    localStorage.setItem(
+      "user",
+      JSON.stringify({
+        username: user.displayName || user.email,
+      })
+    );
+    window.location.href = "/html/index.html";
+  } catch (error) {
+    if (error.code === "auth/account-exists-with-different-credential") {
+      const pendingCred = error.credential;
+      const email = error.customData.email;
+
+      const providers = await fetchSignInMethodsForEmail(auth, email);
+
+      if (providers.includes("google.com")) {
+        alert(
+          "Email này đã đăng nhập bằng Google, vui lòng đăng nhập bằng Google để liên kết tài khoản."
+        );
+
+        window.pendingCredToLink = pendingCred;
+      } else {
+        alert(
+          "Email đã tồn tại với nhà cung cấp khác. Vui lòng đăng nhập bằng phương thức cũ trước."
+        );
+      }
+    } else {
+      console.error("Lỗi đăng nhập bằng Microsoft:", error);
+      alert("Lỗi đăng nhập bằng Microsoft: " + error.message);
+    }
+  }
 });

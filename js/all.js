@@ -1,16 +1,13 @@
-window.addEventListener("load", function () {
+document.addEventListener("DOMContentLoaded", function () {
+  // Code ở đây sẽ chạy khi HTML đã được load xong hoàn toàn
+  console.log("Trang đã load DOM xong!");
   const loader = document.querySelector(".loader");
   const video = document.querySelector(".video-loader");
-  setTimeout(() => {
-    loader.classList.add("hidden");
-    if (video) {
-      video.pause();
-    }
-
-    setTimeout(() => {
-      loader.style.display = "none";
-    }, 500);
-  }, 0);
+  loader.classList.add("hidden");
+  if (video) {
+    video.pause();
+  }
+  loader.style.display = "none";
 });
 
 function getReCaptchaToken() {
@@ -101,3 +98,8 @@ if (logout) {
     }
   });
 }
+const favicon = document.createElement("link");
+favicon.rel = "icon";
+favicon.type = "image/png";
+favicon.href = "/img/logo-title.png";
+document.head.appendChild(favicon);
